@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🚜 Tractor Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px; /* Yeh ensure karega ki desktop par bhi mobile size me hi dikhe */
+            margin: auto;
+        }
+        h2 {
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 20px;
+            display: block;
+            margin-top: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        button {
+            background: #28a745;
+            color: #fff;
+            padding: 15px;
+            border: none;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 15px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+        .error {
+            color: red;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🚜 Tractor Calculator</h2>
+
+        <label>Farmer Name:</label>
+        <input type="text" id="farmerName">
+
+        <label>Start Time:</label>
+        <input type="number" id="startTime">
+
+        <label>End Time:</label>
+        <input type="number" id="endTime">
+
+        <label>Rate per Hour:</label>
+        <input type="number" id="rate">
+
+        <button onclick="calculateTime()">Calculate</button>
+
+        <div class="error" id="error"></div>
+        <div class="result" id="output"></div>
+    </div>
+
+    <script>
+        function calculateTime() {
+            let farmer = document.getElementById("farmerName").value;
+            let start = parseFloat(document.getElementById("startTime").value);
+            let end = parseFloat(document.getElementById("endTime").value);
+            let rate = parseFloat(document.getElementById("rate").value);
+            let errorDiv = document.getElementById("error");
+            let outputDiv = document.getElementById("output");
+
+            // Reset error and output
+            errorDiv.innerHTML = "";
+            outputDiv.innerHTML = "";
+
+            // Error Handling
+            if (isNaN(start) || isNaN(end)) {
+                errorDiv.innerHTML = "❌ Start Time aur End Time dena zaroori hai!";
+                return;
+            }
+            if (end < start) {
+                errorDiv.innerHTML = "❌ End Time, Start Time se bada hona chahiye!";
+                return;
+            }
+
+            // Total time calculation
+            let totalHours = end - start;
+            let hours = Math.floor(totalHours);
+            let minutes = Math.round((totalHours - hours) * 60);
+            let totalTimeText = `Total Time: ${hours} Hours ${minutes} Minutes`;
+
+            // Rate calculation (agar diya ho toh)
+            let earningText = "";
+            if (!isNaN(rate) && rate > 0) {
+                let totalEarning = totalHours * rate;
+                earningText = `<br>💰 Total Payment: ₹${totalEarning.toFixed(2)}`;
+            }
+
+            // Show Output with Farmer Name
+            let farmerText = farmer ? `👨‍🌾 Farmer: ${farmer}<br>` : "";
+            outputDiv.innerHTML = farmerText + totalTimeText + earningText;
+        }
+    </script>
+
+</body>
+</html>
